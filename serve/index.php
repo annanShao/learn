@@ -2,13 +2,16 @@
 /*
  * @Author: your name
  * @Date: 2022-02-13 19:21:17
- * @LastEditTime: 2022-02-14 00:24:26
+ * @LastEditTime: 2022-02-14 00:53:20
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \wxcloudrun-pay-demo-master\server\index.php
  */
   $mchid = '';  // 将子商户ID填写到这里
   $head = getallheaders();
+  echo sprintf('非法途径111');
+  return 100;
+
   if(empty($head['x-wx-source'])){
     echo sprintf('非法途径');
     return 100;
