@@ -2,7 +2,7 @@
 /*
  * @Author: your name
  * @Date: 2022-02-13 19:21:17
- * @LastEditTime: 2022-02-13 23:45:18
+ * @LastEditTime: 2022-02-14 00:16:40
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \wxcloudrun-pay-demo-master\server\index.php
@@ -14,7 +14,8 @@
   //   return 100;
   // }
   $body = json_decode(file_get_contents('php://input'),true);
-    echo sprintf($body);
+  echo sprintf(file_get_contents('php://input'));
+  return 200;
   if($body==null || empty($body["payid"])) {
     echo sprintf('没有收到订单ID');
   } else {
