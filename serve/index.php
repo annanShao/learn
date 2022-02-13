@@ -2,19 +2,19 @@
 /*
  * @Author: your name
  * @Date: 2022-02-13 19:21:17
- * @LastEditTime: 2022-02-13 23:39:35
+ * @LastEditTime: 2022-02-13 23:45:18
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \wxcloudrun-pay-demo-master\server\index.php
  */
   $mchid = '';  // 将子商户ID填写到这里
   $head = getallheaders();
-  if(empty($head['x-wx-source'])){
-    echo sprintf('非法途径');
-    return 100;
-  }
+  // if(empty($head['x-wx-source'])){
+  //   echo sprintf('非法途径');
+  //   return 100;
+  // }
   $body = json_decode(file_get_contents('php://input'),true);
-
+    echo sprintf($body);
   if($body==null || empty($body["payid"])) {
     echo sprintf('没有收到订单ID');
   } else {
@@ -24,8 +24,8 @@
     $method = !empty($body["method"]) ? $body["method"] : null;
     if($method == 'unifiedorder'){
       $url = 'http://api.weixin.qq.com/_/pay/unifiedOrder';
-      echo sprintf('进来咯')
-      return 200
+      echo sprintf('进来咯');
+      return 200;
       $param = array(
         'body' => !empty($body["paytext"]) ? $body["paytext"] : "测试微信支付",
         'openid' => !empty($head['x-wx-openid']) ? $head['x-wx-openid'] : null,
