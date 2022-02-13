@@ -2,35 +2,33 @@
 /*
  * @Author: your name
  * @Date: 2022-02-13 19:21:17
- * @LastEditTime: 2022-02-14 01:14:15
+ * @LastEditTime: 2022-02-14 01:23:14
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \wxcloudrun-pay-demo-master\server\index.php
  */
-  header('Content-Type:application/json; charset=utf-8');
+  // header('Content-Type:application/json; charset=utf-8');
   
-  $result = ['success' => FALSE, 'msg' => '', 'data' => NULL, 'errCode' => -1];
+  // $result = ['success' => FALSE, 'msg' => '', 'data' => NULL, 'errCode' => -1];
   
-  function setError ($msg, $errCode = 4003, $data = NULL)
-  {
-      $result['success'] = FALSE;
-      $result['msg'] = $msg;
-      $result['data'] = $data;
-      $result['errCode'] = $errCode;
-      return $result;
-  }
+  // function setError ($msg, $errCode = 4003, $data = NULL)
+  // {
+  //     $result['success'] = FALSE;
+  //     $result['msg'] = $msg;
+  //     $result['data'] = $data;
+  //     $result['errCode'] = $errCode;
+  //     return $result;
+  // }
 
-  function setSuccess ($msg = '', $errCode = 0, $data = NULL)
-    {
-        $result['success'] = TRUE;
-        $result['msg'] = $msg;
-        $result['data'] = $data;
-        $result['errCode'] = $errCode;
-        return $result;
-    }
+  // function setSuccess ($msg = '', $errCode = 0, $data = NULL)
+  //   {
+  //       $result['success'] = TRUE;
+  //       $result['msg'] = $msg;
+  //       $result['data'] = $data;
+  //       $result['errCode'] = $errCode;
+  //       return $result;
+  //   }
 
-  echo(123);
-  return 100;
 
 
 
