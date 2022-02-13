@@ -1,29 +1,86 @@
 {
+  "envId": "construction-training-8a6832589a",
   "version": "2.0",
-  "envId": "learn-5gnp3ffb7490891b",
   "$schema": "https://framework-1258016615.tcloudbaseapp.com/schema/latest.json",
   "functionRoot": "cloudfunctions",
+  "functions": [],
   "framework": {
-    "name": "vue",
+    "name": "learn",
     "plugins": {
-      "client": {
+      "vue": {
         "use": "@cloudbase/framework-plugin-website",
         "inputs": {
           "buildCommand": "npm run build",
-          "outputPath": "dist",
-          "cloudPath": "/vue",
-          "envVariables": {
-            "VUE_APP_ENV_ID": "{{env.ENV_ID}}"
-          }
+          "outputPath": "dist"
         }
       },
-      "server": {
+      "function": {
         "use": "@cloudbase/framework-plugin-function",
         "inputs": {
           "functionRootPath": "cloudfunctions",
           "functions": [
             {
-              "name": "vue-echo",
+              "name": "buyQuestion",
+              "timeout": 5,
+              "envVariables": {},
+              "runtime": "Nodejs10.15",
+              "memory": 128,
+              "aclRule": {
+                "invoke": true
+              }
+            },
+            {
+              "name": "getList",
+              "timeout": 5,
+              "envVariables": {},
+              "runtime": "Nodejs10.15",
+              "memory": 128,
+              "aclRule": {
+                "invoke": true
+              }
+            },
+            {
+              "name": "getMyPayments",
+              "timeout": 5,
+              "envVariables": {},
+              "runtime": "Nodejs10.15",
+              "memory": 128,
+              "aclRule": {
+                "invoke": true
+              }
+            },
+            {
+                "name": "getMyScore",
+              "timeout": 5,
+              "envVariables": {},
+              "runtime": "Nodejs10.15",
+              "memory": 128,
+              "aclRule": {
+                "invoke": true
+              }
+            },
+            {
+                "name": "getQuestion",
+              "timeout": 5,
+              "envVariables": {},
+              "runtime": "Nodejs10.15",
+              "memory": 128,
+              "aclRule": {
+                "invoke": true
+              }
+            },
+            {
+                "name": "removeWrong",
+              "timeout": 5,
+              "envVariables": {},
+              "runtime": "Nodejs10.15",
+              "memory": 128,
+              "aclRule": {
+                "invoke": true
+              }
+            },
+            {
+                "name": "submitExam",
               "timeout": 5,
               "envVariables": {},
               "runtime": "Nodejs10.15",
@@ -34,20 +91,7 @@
             }
           ]
         }
-      },
-      "auth": {
-        "use": "@cloudbase/framework-plugin-auth",
-        "inputs": {
-          "configs": [
-            {
-              "platform": "NONLOGIN",
-              "status": "ENABLE"
-            }
-          ]
-        }
       }
     }
-  },
-  "functions": [],
-  "region": "ap-shanghai"
+  }
 }

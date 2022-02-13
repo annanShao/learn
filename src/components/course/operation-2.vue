@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-02-04 14:25:46
- * @LastEditTime: 2022-02-11 11:37:23
+ * @LastEditTime: 2022-02-12 16:04:22
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\course\course-2.vue
@@ -9,7 +9,7 @@
 <template>
 <div>
   <div class="operation-2__wrapper">
-    <h1>操作手册</h1>
+    <h1>实操手册</h1>
     <h3> 一、识别判断施工升降机设置的二个简单故障</h3>
     <strong>吊笼上、下运行时自停现象</strong>
     <p>1、上、下限位开关接触不良或损坏</p>

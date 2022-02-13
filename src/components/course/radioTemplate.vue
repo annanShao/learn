@@ -3,7 +3,7 @@ import { constants } from 'http2';
 import { constants } from 'http2';
  * @Author: your name
  * @Date: 2022-02-07 21:17:06
- * @LastEditTime: 2022-02-12 13:30:43
+ * @LastEditTime: 2022-02-12 22:42:10
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\course\radioTemplate.vue
@@ -95,11 +95,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "./common.less";
-
+@import "../../style/common.less";
 .course-radio-template {
   &__option {
-    font-size: 14px;
+    // font-size: 16px;
+    .cell-resize();
     border-bottom: 1px solid #eee;
     padding: 12px;
     display: flex;
@@ -112,20 +112,19 @@ export default {
     &-key {
       border: 1px solid #eee;
       border-radius: 50%;
-      font-size: 14px;
-      width: 20px;
-      height: 20px;
+      // font-size: 16px;
+      .cell-resize();
+      .option-key();
       text-align: center;
-      line-height: 20px;
 
       .answer-right & {
-        .right-icon;
+        .right-icon-resize();
         color: #6c0;
         border: none;
       }
 
       .answer-wrong & {
-        .error-icon;
+        .error-icon-resize();
         color: #f46263;
         border: none;
       }

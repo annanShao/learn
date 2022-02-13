@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-01-30 14:12:05
- * @LastEditTime: 2022-02-12 13:34:55
+ * @LastEditTime: 2022-02-13 18:16:37
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\course\listPanel.vue
@@ -26,17 +26,17 @@
           </div>
           <!-- 选择一个月三个月 -->
           <van-radio-group v-model="chooseQuestionCount[index].count" direction="horizontal" :icon-size="18" class="list-panel__radio-group">
-            <van-radio :name="1" checked-color="#ff6034">1个月</van-radio>
-            <van-radio :name="3" checked-color="#ff6034">3个月</van-radio>
+            <van-radio :name="1" class="cell-font-resize" checked-color="#ff6034">1个月</van-radio>
+            <van-radio :name="3" class="cell-font-resize" checked-color="#ff6034">3个月</van-radio>
           </van-radio-group>
           <van-button @click="handleBuyQuestion(item.id, item.type, index, chooseQuestionCount[index].count)" round style="height: 30px" color="linear-gradient(to right, #ff6034, #ee0a24)" block>立即购买</van-button>
         </div>
         <div v-else class="course-listpanel__cell-wrapper">
-          <van-cell title="购买时长：" :value="`${item.count}个月`" />
-          <van-cell title="本题库购买时间：" :value="new Date(item.gmt_create * 1000).toLocaleString('zh', { hour12: false })" />
-          <van-cell title="本题库有效时间：" :value="new Date(item.gmt_end * 1000).toLocaleString('zh', { hour12: false })" />
-          <van-divider dashed>功能</van-divider>
-          <van-cell :title="questionChoose[itemQ]" v-for="itemQ in Object.keys(questionChoose)" :key="itemQ" @click="handleQuestionEnter(itemQ, item.id)" is-link />
+          <van-cell title-class="cell-font-resize" value-class="cell-font-resize" title="购买时长：" :value="`${item.count}个月`" />
+          <van-cell title-class="cell-font-resize" value-class="cell-font-resize" title="本题库购买时间：" :value="new Date(item.gmt_create * 1000).toLocaleString('zh', { hour12: false })" />
+          <van-cell title-class="cell-font-resize" value-class="cell-font-resize" title="本题库有效时间：" :value="new Date(item.gmt_end * 1000).toLocaleString('zh', { hour12: false })" />
+          <van-divider dashed class="cell-font-resize">功能</van-divider>
+          <van-cell title-class="cell-font-resize" value-class="cell-font-resize" :title="questionChoose[questionType][itemQ]" v-for="itemQ in Object.keys(questionChoose[questionType])" :key="itemQ" @click="handleQuestionEnter(itemQ, item.id)" is-link />
         </div>
       </template>
     </van-collapse-item>
@@ -50,7 +50,9 @@
 
 <script>
 import _ from 'lodash'
-// import uuid from "@/utils/uuid.js"
+import uuid from "@/utils/uuid.js"
+import wx from 'weixin-js-sdk'
+
 import {
   Dialog
 } from 'vant';
@@ -65,12 +67,18 @@ export default {
     return {
       activePanels: [],
       typeDict: ['新培', '复审'],
-      questionChoose: {
-        order: '顺序练习',
-        test: '模拟考试',
-        operation: '操作手册',
-        wrong: '错题回顾'
-      },
+      questionChoose: [{
+          order: '顺序练习',
+          test: '模拟考试',
+          operation: '实操手册',
+          wrong: '错题回顾'
+        },
+        {
+          order: '顺序练习',
+          test: '模拟考试',
+          wrong: '错题回顾'
+        }
+      ],
       showDialog: false,
       chooseQuestionCount: []
     }
@@ -123,7 +131,7 @@ export default {
         })
         .then(() => {
           // on confirm
-          // todo 对接到微信支付
+          // todo 对接到微信支付 需要传用户的openid什么的给后边，或缺prepayid
           const app = this.$cloudbase
           app.callFunction({
               name: 'buyQuestion',
@@ -137,6 +145,7 @@ export default {
             .then((res) => {
               console.log(res)
               const timeNow = res.result.data.timeNow
+
               // 这样子直接更新就不需要刷新了
               this.data[index] = {
                 ...this.data[index],
@@ -162,6 +171,46 @@ export default {
     }, 500),
     handleRadioSelectChange() {
       console.log(this.data)
+    },
+    wechatPay() {
+      wx.config({
+        debug: true, // 这里一般在测试阶段先用ture，等打包给后台的时候就改回false, 
+        appId: 'wx15ee0f3d3544e530', // 必填，公众号的唯一标识 
+        timestamp: parseInt(new Date().getTime() / 1000), // 必填，生成签名的时间戳     
+        nonceStr: uuid(), // 必填，生成签名的随机串 
+        signature: uuid(), // 必填，签名 
+        jsApiList: ['chooseWXPay'] // 必填，需要使用的JS接口列表 
+      })
+      wx.ready(() => {
+        wx.checkJsApi({
+          jsApiList: ['chooseWXPay'],
+          success: function (res) {
+            console.log("seccess")
+            console.log('hskdjskjk', res)
+          },
+          fail: function (res) {
+            console.log("fail");
+            console.log(res)
+          }
+        })
+        wx.chooseWXPay({
+          timestamp: parseInt(new Date().getTime() / 1000), // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符     
+          nonceStr: uuid(), // 支付签名随机串，不长于 32 位         
+          package: this.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）     
+          signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'     
+          paySign: uuid(), // 支付签名     
+          success: function (res) { // 支付成功后的回调函数       
+            alert(res.errorMsg)
+          },
+          fail: function (res) {
+            alert("支付失败");
+            alert(res.errMsg);
+          }
+        })
+      })
+      wx.error(err => {
+        alert(err)
+      })
     }
   },
   created() {
@@ -174,17 +223,26 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less">
+@import "../../style/common.less";
+
 .course-listpanel__wrapper {
   text-align: left;
 }
 
 .course-listpanel__collapse-label {
   margin: 8px 0;
+  .cell-resize();
 }
 
 .course-listpanel__cell-wrapper>.van-cell {
   padding: 4px 6px;
+}
+
+.course-list__cell {
+  // font-size: 16px;
+  .cell-resize();
+
 }
 
 .list-panel__radio-group {

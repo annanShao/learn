@@ -5,7 +5,7 @@ import { constants } from 'http2';
 import { NumberKeyboard } from 'vant';
  * @Author: your name
  * @Date: 2022-02-09 17:11:11
- * @LastEditTime: 2022-02-12 13:35:26
+ * @LastEditTime: 2022-02-12 22:08:06
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\course\answerList.vue
@@ -17,11 +17,11 @@ import { NumberKeyboard } from 'vant';
       <div class="answer-list__time-wrapper">
         <div class="answer-list__time-submit" @click="handleSubmitExam('click')" v-if="type === 'test'">
           <van-icon name="completed" />
-          <span style="font-size: 14px;margin-left: 2px">交卷</span>
+          <span style="margin-left: 2px">交卷</span>
         </div>
         <van-icon name="underway-o" />
         <van-count-down ref="timeDown" @finish="handleSubmitExam('time')" class="time-down" v-if="type === 'test'" :time="time" format="mm:ss" />
-        <span v-else style="font-size: 14px;margin-left: 6px;">不限时</span>
+        <span v-else style="margin-left: 6px;">不限时</span>
       </div>
       <van-icon @click="handleRemoveWrong" style="margin-left: 12px;" name="delete-o" v-if="type === 'wrong'"><span class="answer-list__delete-word">移除</span></van-icon>
     </div>
@@ -34,7 +34,7 @@ import { NumberKeyboard } from 'vant';
       </div>
       <div class="answer-list__answer-show-wrapper" @click="handleOperatePanel('normal')">
         <van-icon name="apps-o" />
-        <span style="margin-left: 4px;font-size: 14px">{{currentIndex}}/{{listLength}}</span>
+        <span style="margin-left: 4px;">{{currentIndex}}/{{listLength}}</span>
       </div>
     </div>
   </div>
@@ -263,6 +263,7 @@ export default {
 
 <style lang="less" scoped>
 @import "./common.less";
+@import "../../style/common.less";
 
 .answer-list {
   &__wrapper {
@@ -271,7 +272,8 @@ export default {
     display: flex;
     position: fixed;
     width: 100%;
-    font-size: 16px;
+    // font-size: 16px;
+    .cell-resize();
     align-items: center;
     bottom: 0;
     color: #bbb;
@@ -320,12 +322,14 @@ export default {
 
   &__answer-show-wrapper {
     right: 12px;
-    font-size: 16px;
+    // font-size: 16px;
+    .cell-resize();
   }
 
   &__time {
     &-submit {
-      font-size: 16px;
+      // font-size: 16px;
+      .cell-resize();
       margin-right: 8px;
       line-height: 16px;
       color: #54d16f;
@@ -340,14 +344,16 @@ export default {
       & .time-down {
         color: #bbb;
         margin-left: 4px;
-        font-size: 14px;
-        line-height: 14px;
+        // font-size: 16px;
+        .cell-resize();
+        line-height: 16px;
       }
     }
   }
 
   &__delete-word {
-    font-size: 14px;
+    // font-size: 16px;
+    .cell-resize();
     margin-left: 6px;
     line-height: 16px;
   }
@@ -372,7 +378,8 @@ export default {
       margin: 12px 0 0 10px;
       border-radius: 25px;
       border: 1px solid #ccc;
-      font-size: 15px;
+      // font-size: 16px;
+      .cell-resize();
       line-height: 49px;
       text-align: center;
       color: #ccc;

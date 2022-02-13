@@ -2,7 +2,7 @@
 import { constants } from 'http2';
  * @Author: your name
  * @Date: 2022-01-26 20:51:59
- * @LastEditTime: 2022-02-12 11:55:33
+ * @LastEditTime: 2022-02-12 22:45:14
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\person\myScore.vue
@@ -66,13 +66,15 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "../../style/common.less";
 .my-score {
   &__wrapper {
     padding: 12px;
   }
 
   &__title {
-    font-size: 16px;
+    // font-size: 16px;
+    .cell-resize();
     font-weight: 400;
     text-align: center;
     border-color: '#1989fa';
@@ -88,11 +90,14 @@ export default {
     border: 1px dashed #ccc;
     text-align: left;
     padding: 12px;
-    font-size: 14px;
+    // font-size: 16px;
+    .cell-resize();
   }
 
   &__block-item {
+    display: flex;
     margin-bottom: 8px;
+    align-items: center;
 
     &:last-child {
       margin-bottom: 0;

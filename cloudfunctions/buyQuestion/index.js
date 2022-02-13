@@ -1,12 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2022-01-25 19:29:30
- * @LastEditTime: 2022-02-11 19:14:11
+ * @LastEditTime: 2022-02-13 18:19:47
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\cloudfunctions\helloworld\index.js
  */
 const cloud = require("@cloudbase/node-sdk");
+const { sub_mch_id } = require('key.json')
 
 exports.main = async event => {
   const app = cloud.init({
@@ -16,7 +17,8 @@ exports.main = async event => {
     sid,
     uid,
     count,
-    type
+    type,
+    code
   } = event
 
 

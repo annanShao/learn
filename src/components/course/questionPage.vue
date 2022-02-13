@@ -2,7 +2,7 @@
 import { constants } from 'http2';
  * @Author: your name
  * @Date: 2022-02-04 12:15:49
- * @LastEditTime: 2022-02-12 14:06:42
+ * @LastEditTime: 2022-02-12 22:39:14
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\course\questionPage.vue
@@ -13,7 +13,7 @@ import { constants } from 'http2';
   <div v-else-if="loadingStatus === 'success' && questionInfo.length">
     <div class="question-page__body-wrapper">
       <van-swipe ref="swipe" @change="(index) => current = index + 1" :loop="false">
-        <van-swipe-item style="min-height: 100%" v-for="(item, index) in questionInfo" :key="item._id">
+        <van-swipe-item style="min-height: 500px" v-for="(item, index) in questionInfo" :key="item._id">
           <!-- header title-->
           <div class="question-page__title">
             <van-tag size="medium" type="primary">{{item.type_name}}</van-tag> {{`${index + 1}. ${item.title}`}}
@@ -259,6 +259,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "../../style/common.less";
 .question-page {
   &__body-wrapper {
     padding: 12px 12px 0 12px;
@@ -267,7 +268,8 @@ export default {
   }
 
   &__title {
-    font-size: 15px;
+    // font-size: 16px;
+    .cell-resize();
     margin-bottom: 32px;
   }
 
@@ -279,7 +281,8 @@ export default {
 
   &__answer-wrapper {
     margin: 20px 0 0 12px;
-    font-size: 14px;
+    // font-size: 16px;
+    .cell-resize();
   }
 }
 </style>

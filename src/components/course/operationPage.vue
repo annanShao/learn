@@ -4,7 +4,7 @@ import { constants } from 'http2';
 import { parse } from 'querystring';
  * @Author: your name
  * @Date: 2022-02-04 12:16:44
- * @LastEditTime: 2022-02-12 11:55:30
+ * @LastEditTime: 2022-02-12 16:04:28
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\course\operationPage.vue
@@ -32,7 +32,7 @@ import { parse } from 'querystring';
       <Operation-6></Operation-6>
     </div>
     <div v-else class="course-operationpage__shownull-words">
-      <van-empty description="此题库暂无更多操作手册信息......" />
+      <van-empty description="此题库暂无更多实操手册信息......" />
     </div>
   </div>
 </div>
