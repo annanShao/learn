@@ -2,7 +2,7 @@
 /*
  * @Author: your name
  * @Date: 2022-02-13 19:21:17
- * @LastEditTime: 2022-02-14 01:03:31
+ * @LastEditTime: 2022-02-14 01:07:10
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \wxcloudrun-pay-demo-master\server\index.php
@@ -28,8 +28,9 @@
         $result['errCode'] = $errCode;
         return $result;
     }
+    echo($_GET);
 
-  echo(json_encode(setSuccess(123)))
+  echo(json_encode(setSuccess(123)));
   return 100;
 
 
