@@ -2,7 +2,7 @@
 /*
  * @Author: your name
  * @Date: 2022-02-13 19:21:17
- * @LastEditTime: 2022-02-14 02:46:03
+ * @LastEditTime: 2022-02-14 02:56:42
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \wxcloudrun-pay-demo-master\server\index.php
@@ -40,7 +40,8 @@
 
   $mchid = '';  // 将子商户ID填写到这里
   $head = getallheaders();
-  echo sprintf($head);
+  var_dump($_POST);
+  var_dump($head);
   return 200;
   echo sprintf($_POST);
   if(empty($head['x-wx-source'])){
