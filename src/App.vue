@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-01-20 17:46:42
- * @LastEditTime: 2022-02-13 18:11:11
+ * @LastEditTime: 2022-02-14 02:33:22
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\App.vue
@@ -55,6 +55,7 @@ export default {
     //   jsApiList: ['chooseWXPay'] // 必填，需要使用的JS接口列表
     // });
     // // this.login(); // 微信登录
+    // console.log(result)
 
     window.document.documentElement.setAttribute('dataSize', 3);
   }

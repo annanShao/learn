@@ -8,6 +8,8 @@
   "license": "ISC",
   "dependencies": {
     "@cloudbase/node-sdk": "1.1.1",
-    "axios": "^0.26.0"
+    "axios": "^0.26.0",
+    "got": "^10.7.0",
+    "node-fetch": "^3.2.0"
   }
 }
