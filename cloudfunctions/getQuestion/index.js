@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-25 19:29:30
- * @LastEditTime: 2022-02-12 13:44:20
+ * @LastEditTime: 2022-02-15 13:11:43
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\cloudfunctions\helloworld\index.js
@@ -36,7 +36,7 @@ exports.main = async event => {
   }
   const tempData = data.data[0]
   // if ((tempData.gmt_create + tempData.count / 10 * 60) < parseInt(new Date().getTime() / 1000)) { // test
-    if ((tempData.gmt_create + tempData.count / 10 * 60 * 60 * 24 * 30) < parseInt(new Date().getTime() / 1000)) {
+  if ((tempData.gmt_create + tempData.count / 10 * 60 * 60 * 24 * 30) < parseInt(new Date().getTime() / 1000)) {
     return {
       success: false,
       message: '题库有效期已过，请重新购买'

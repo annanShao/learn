@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-25 19:29:30
- * @LastEditTime: 2022-02-15 12:42:31
+ * @LastEditTime: 2022-02-15 16:26:30
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\cloudfunctions\helloworld\index.js
@@ -44,8 +44,8 @@ exports.main = async event => {
   const payId = uuid().slice(0, 16)
 
   let bodyData = "一学通建培-题库费用"
-  // let total_fee = count * 10 * 100
-  let total_fee = count * 1
+  let total_fee = count * 10 * 100
+  // let total_fee = count * 1
   let notify_url = "https://construction-training-8a6832589a-1309600671.ap-shanghai.app.tcloudbase.com/payCallback"
   let spbill_create_ip = '127.0.0.1'
   let trade_type = 'JSAPI'
