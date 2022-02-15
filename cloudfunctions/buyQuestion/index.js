@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-25 19:29:30
- * @LastEditTime: 2022-02-15 10:15:22
+ * @LastEditTime: 2022-02-15 12:42:31
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\cloudfunctions\helloworld\index.js
@@ -51,9 +51,6 @@ exports.main = async event => {
   let trade_type = 'JSAPI'
   let sign_type = "MD5"
 
-  // console.log('123', randomId)
-  // console.log('456', payId)
-
   let sign_pre = {
     appid: appid,
     mch_id: sub_mch_id,
@@ -69,7 +66,6 @@ exports.main = async event => {
   }
 
   let sign = MSign(sign_pre, apikey)
-  // console.log(789,sign)
 
   let formData = "<xml>";
   formData += "<appid><![CDATA[" + appid + "]]></appid>";
@@ -85,7 +81,6 @@ exports.main = async event => {
   formData += "<trade_type><![CDATA[" + trade_type + "]]></trade_type>";
   formData += "<sign>" + sign + "</sign>"; //sign是上一步签名产生的;
   formData += "</xml>";
-  // console.log(999, formData)
 
   let {
     body
@@ -104,7 +99,6 @@ exports.main = async event => {
       if (response.xml.return_msg.text().toLocaleUpperCase() == 'OK') {
         //此时返回的数据并不能直接用在客户端，需要再次签名;
         let prepay_id = response.xml.prepay_id.text();
-        // console.log('res', response.xml)
         prepayId = prepay_id
         let timestamp = parseInt(new Date().getTime() / 1000) + '';
         //4.签名
@@ -125,7 +119,6 @@ exports.main = async event => {
           'paySign': finalsign
         };
         finalData = clientParam
-        // return(clientParam)
       } else {
         finalData = false
       }
@@ -187,9 +180,7 @@ function uuid() {
 //mchkey是你在支付平台设置的一个API密钥
 function MSign(param, mchkey) {
   var string = raw(param);
-  // console.log(string)
   string = string + '&key=' + mchkey; //key拼接在字符串最后面
-  // console.log('加了密钥', string)
   var crypto = require('crypto');
   return crypto.createHash('md5').update(string, 'utf8').digest('hex').toUpperCase();
 }

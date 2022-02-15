@@ -4,15 +4,15 @@ import { constants } from 'http2';
 import { parse } from 'querystring';
  * @Author: your name
  * @Date: 2022-02-04 12:16:44
- * @LastEditTime: 2022-02-15 11:50:26
+ * @LastEditTime: 2022-02-15 12:42:00
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\course\operationPage.vue
 -->
 <template>
 <div>
-  <van-skeleton class="skeleton-class" title :row="13" v-if="!getImgDone" />
-  <div v-else>
+  <van-skeleton class="skeleton-class" title :row="13" v-if="loadingStatus === 'pending'" />
+  <div v-else-if="loadingStatus === 'success'">
     <div v-if="courseIndex === 1">
       <img v-for="item in Object.values(fileUrls)" :key="item" class="course-operationpage__img-full" :src="item" alt="">
     </div>
@@ -35,6 +35,7 @@ import { parse } from 'querystring';
       <van-empty description="此题库暂无更多实操手册信息......" />
     </div>
   </div>
+  <van-empty v-else description="此题库暂无更多实操手册信息......" />
 </div>
 </template>
 
@@ -58,46 +59,51 @@ export default {
     return {
       courseIndex: 999,
       fileUrls: {},
-      getImgDone: false
+      loadingStatus: 'pending'
     }
   },
   methods: {
     getNameFromFileId(fileId) {
-      return fileId.substr(fileId.match(`operation_${this.courseIndex}`).index + 12)
+      return fileId.slice(fileId.match(`operation_${this.courseIndex}`).index + 12)
     }
   },
   async created() {
     this.courseIndex = parseInt(this.$route.query.sid)
     const app = this.$cloudbase
-    const db = app.database()
-    const _ = db.command
 
-    let {result} = await db
-      .collection('operationImg')
-      .where({
-        sid: _.eq(this.courseIndex)
+    app.callFunction({
+        name: 'getOperationImg',
+        data: {
+          sid: this.courseIndex
+        }
       })
-      .get()
-    let fileIds = result.data.map(current => {
-      return current.fileId
-    })
-    if (fileIds.length) {
-      app
-        .getTempFileURL({
-          fileList: fileIds
-        })
-        .then((res) => {
-          this.fileUrls = res.fileList.reduce((total, current) => {
-            let key = this.getNameFromFileId(current.tempFileURL)
-            total[key] = current.tempFileURL
-            return total
-          }, {})
-          console.log(this.fileUrls)
-          this.getImgDone = true
-        });
-    } else {
-      this.getImgDone = true
-    }
+      .then(res => {
+        if (res.result.success) {
+          const data = res.result.data
+          let fileIds = data.map(current => {
+            return current.fileId
+          })
+          if (fileIds.length) {
+            app
+              .getTempFileURL({
+                fileList: fileIds
+              })
+              .then((res) => {
+                this.fileUrls = res.fileList.reduce((total, current) => {
+                  let key = this.getNameFromFileId(current.tempFileURL)
+                  total[key] = current.tempFileURL
+                  return total
+                }, {})
+              });
+          }
+          this.loadingStatus = 'success'
+        } else {
+          this.loadingStatus = 'fail'
+        }
+      })
+      .catch(error => {
+        this.loadingStatus = 'fail'
+      })
   }
 }
 </script>

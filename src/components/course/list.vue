@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-01-25 18:48:58
- * @LastEditTime: 2022-02-14 23:22:26
+ * @LastEditTime: 2022-02-15 12:43:50
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\course\list.vue
@@ -80,7 +80,6 @@ export default {
         }
       })
       .then(res => {
-        console.log(res)
         if (res.result.success) {
           this.loadingStatus = 'success'
           this.courseList = res.result.data.courseListData
@@ -96,7 +95,6 @@ export default {
         }
       })
       .catch(error => {
-        console.log(error)
         this.loadingStatus = 'fail'
         Notify({
           type: 'danger',

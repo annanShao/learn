@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-02-13 14:27:12
- * @LastEditTime: 2022-02-15 10:42:34
+ * @LastEditTime: 2022-02-15 12:43:11
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\cloudfunctions\payCallback\index.js
@@ -19,7 +19,6 @@ exports.main = serverless(async (req, res) => {
   });
   const db = app.database()
   const _ = db.command
-  console.log(req.apiGateway.event)
   const event = req.apiGateway.event
 
   const body = req.apiGateway.event.body
@@ -29,9 +28,7 @@ exports.main = serverless(async (req, res) => {
   let result = {}
   xmlreader.read(data, function (errors, response) {
     if (errors !== null) {
-      console.log('error', errors)
     } else {
-      console.log(response.xml)
       if (response.xml.return_code.text().toLocaleUpperCase() == 'SUCCESS') {
         result = {
           out_trade_no: response.xml.out_trade_no.text(),
@@ -39,7 +36,6 @@ exports.main = serverless(async (req, res) => {
           transaction_id: response.xml.transaction_id.text(),
         }
       } else {
-        console.log(fail)
       }
     }
   })

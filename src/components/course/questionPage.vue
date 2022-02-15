@@ -2,7 +2,7 @@
 import { constants } from 'http2';
  * @Author: your name
  * @Date: 2022-02-04 12:15:49
- * @LastEditTime: 2022-02-15 00:17:19
+ * @LastEditTime: 2022-02-15 12:45:46
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\course\questionPage.vue
@@ -154,7 +154,6 @@ export default {
           }
         })
         .then(res => {
-          console.log(res)
           Dialog.confirm({
               title: '注意',
               message: `您的考试成绩为${score}分`,
@@ -176,7 +175,6 @@ export default {
             })
         })
         .catch((error) => {
-          console.log(error)
           Notify({
             type: 'danger',
             message: '提交失败，请稍后重试',
@@ -243,7 +241,6 @@ export default {
         }
       })
       .then(res => {
-        console.log(res)
         let result = res.result
         if (result.success === false) {
           this.loadingStatus = 'fail'
@@ -266,7 +263,6 @@ export default {
         this.loadingStatus = 'success'
       })
       .catch((error) => {
-        console.log(error)
         this.loadingStatus = 'fail'
       })
   }

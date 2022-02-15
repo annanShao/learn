@@ -5,7 +5,7 @@ import { constants } from 'http2';
 import { NumberKeyboard } from 'vant';
  * @Author: your name
  * @Date: 2022-02-09 17:11:11
- * @LastEditTime: 2022-02-15 00:17:02
+ * @LastEditTime: 2022-02-15 12:45:19
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\course\answerList.vue
@@ -105,7 +105,6 @@ export default {
       }
     },
     handleSelectItem(index) {
-      // console.log(index)
       this.$emit("handleSwipeTo", index)
       this.showSelectPanel = false
     },
@@ -210,7 +209,6 @@ export default {
                   message: res.result.message,
                   duration: 2000
                 })
-                console.log('before', this.questionInfo.length)
                 this.questionInfo.splice(index, 1)
                 if (!this.questionInfo.length) {
                   Dialog.confirm({
@@ -224,7 +222,6 @@ export default {
                       })
                     })
                 } else {
-                  console.log(index, this.questionInfo.length)
                   if (this.questionInfo.length === index) {
                     this.$emit("handleSwipeTo", index)
                   } else {
@@ -240,7 +237,6 @@ export default {
               }
             })
             .catch(error => {
-              console.log(error)
               Notify({
                 type: 'danger',
                 message: error.message,

@@ -3,7 +3,7 @@ import { constants } from 'http2';
 import { constants } from 'http2';
  * @Author: your name
  * @Date: 2022-02-07 21:17:06
- * @LastEditTime: 2022-02-14 23:14:28
+ * @LastEditTime: 2022-02-15 12:45:45
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\course\radioTemplate.vue
@@ -59,7 +59,6 @@ export default {
       }
     },
     judgeAnswerClassOrWordTemp(select, answer, option, type) {
-      // console.log(type, select, option)
       if (select === option) {
         if (answer === option) {
           return type === 'class' ? 'answer-right' : ''
