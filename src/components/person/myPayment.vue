@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-01-26 20:52:12
- * @LastEditTime: 2022-02-12 22:06:30
+ * @LastEditTime: 2022-02-15 00:16:27
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\person\myPayment.vue
@@ -56,11 +56,18 @@ export default {
   },
   async created() {
     const app = this.$cloudbase
-
+    const uid = localStorage.getItem('uid') || null;
+    if (uid === null) {
+      Notify({
+        type: 'warning',
+        message: '请刷新后重试'
+      })
+      return false
+    }
     app.callFunction({
         name: 'getMyPayments',
         data: {
-          uid: 1
+          uid: uid
         }
       })
       .then(res => {

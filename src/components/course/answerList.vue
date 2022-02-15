@@ -5,7 +5,7 @@ import { constants } from 'http2';
 import { NumberKeyboard } from 'vant';
  * @Author: your name
  * @Date: 2022-02-09 17:11:11
- * @LastEditTime: 2022-02-12 22:08:06
+ * @LastEditTime: 2022-02-15 00:17:02
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\course\answerList.vue
@@ -176,6 +176,14 @@ export default {
       }
     },
     handleRemoveWrong() {
+      const uid = localStorage.getItem('uid') || null;
+      if (uid === null) {
+        Notify({
+          type: 'warning',
+          message: '请刷新后重试'
+        })
+        return false
+      }
       Dialog.confirm({
           title: '注意',
           message: '是否确认移除该题目'
@@ -190,7 +198,7 @@ export default {
           app.callFunction({
               name: 'removeWrong',
               data: {
-                uid: 1, // uid
+                uid: uid,
                 sid: sid,
                 qid: id
               }
@@ -255,7 +263,7 @@ export default {
       }
     },
     handleTouchStart(e) {
-      this.startY = e.touches[0].pageY; 
+      this.startY = e.touches[0].pageY;
     }
   }
 }

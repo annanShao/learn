@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-01-30 14:12:05
- * @LastEditTime: 2022-02-13 18:16:37
+ * @LastEditTime: 2022-02-15 11:49:52
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\course\listPanel.vue
@@ -54,7 +54,8 @@ import uuid from "@/utils/uuid.js"
 import wx from 'weixin-js-sdk'
 
 import {
-  Dialog
+  Dialog,
+  NoticeBar
 } from 'vant';
 
 import {
@@ -66,6 +67,7 @@ export default {
   data() {
     return {
       activePanels: [],
+      currentPanelIndex: -1,
       typeDict: ['新培', '复审'],
       questionChoose: [{
           order: '顺序练习',
@@ -80,7 +82,8 @@ export default {
         }
       ],
       showDialog: false,
-      chooseQuestionCount: []
+      chooseQuestionCount: [],
+      finalData: {}
     }
   },
   props: {
@@ -116,6 +119,7 @@ export default {
     },
     handleBuyQuestion: _.debounce(function (sid, type, index, choose) {
       console.log(choose)
+      this.currentPanelIndex = index
       if (!choose) {
         Notify({
           type: 'warning',
@@ -125,6 +129,14 @@ export default {
         return false
       }
       const count = parseInt(choose)
+      const uid = localStorage.getItem('uid');
+      const openid = localStorage.getItem('openid')
+      if (uid === null) {
+        Notify({
+          type: 'warning',
+          message: '请刷新后重试'
+        })
+      }
       Dialog.confirm({
           title: '注意',
           message: `是否确定购买此题库——${choose}个月`
@@ -137,24 +149,39 @@ export default {
               name: 'buyQuestion',
               data: {
                 sid,
-                uid: 1, // todo
+                uid: uid,
                 count: count,
-                type
+                type,
+                openid: openid
               }
             })
             .then((res) => {
-              console.log(res)
-              const timeNow = res.result.data.timeNow
+              // 唤起支付
+              if (res.result.success) {
+                console.log(res)
+                const timeNow = res.result.data.timeNow
+                this.finalData = res.result.data.finalData
 
-              // 这样子直接更新就不需要刷新了
-              this.data[index] = {
-                ...this.data[index],
-                count: count,
-                gmt_create: timeNow,
-                gmt_end: timeNow + count * 60 * 60 * 24 * 30,
-                status: 1
+                if (typeof WeixinJSBridge == "undefined") {
+                  if (document.addEventListener) {
+                    document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                  } else if (document.attachEvent) {
+                    document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                    document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                  }
+                } else {
+                  this.onBridgeReady({
+                    count,
+                    index,
+                    timeNow
+                  });
+                }
+              } else {
+                Notify({
+                  type: 'danger',
+                  message: res.result.message
+                })
               }
-              this.$forceUpdate()
             })
             .catch(error => {
               console.log(error)
@@ -171,6 +198,50 @@ export default {
     }, 500),
     handleRadioSelectChange() {
       console.log(this.data)
+    },
+    onBridgeReady(data = null) {
+      let that = this
+      WeixinJSBridge.invoke(
+        'getBrandWCPayRequest', {
+          ...this.finalData
+        },
+        async function (res) {
+          console.log(res)
+
+          // if (res.err_msg == "get_brand_wcpay_request:ok") {
+          // 使用以上方式判断前端返回,微信团队郑重提示：
+          //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+          const app = that.$cloudbase
+          await app.callFunction({
+              name: 'checkPayment',
+              data: {
+                pid: that.finalData.package.slice(10),
+                timeStamp: that.finalData.timeStamp
+              }
+            })
+            .then(res => {
+              if (res.result.success && data) {
+                // 这样子直接更新就不需要刷新了
+                console.log(that.data)
+                that.data[data.index] = {
+                  ...that.data[data.index],
+                  count: data.count,
+                  gmt_create: data.timeNow,
+                  gmt_end: data.timeNow + data.count * 60 * 60 * 24 * 30,
+                  status: 1
+                }
+                Notify({
+                  type: 'danger',
+                  message: `${that.data[data.index].status}`
+                })
+                that.$forceUpdate()
+              } else {
+                // 刷新
+                window.location.reload()
+              }
+            })
+          // }
+        });
     },
     wechatPay() {
       wx.config({

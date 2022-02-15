@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-01-25 18:48:58
- * @LastEditTime: 2022-02-12 21:35:55
+ * @LastEditTime: 2022-02-14 23:22:26
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\course\list.vue
@@ -65,10 +65,18 @@ export default {
   },
   async created() {
     const app = this.$cloudbase
+    const uid = localStorage.getItem('uid') || null;
+    if (uid === null) {
+      Notify({
+        type: 'warning',
+        message: '请刷新后重试'
+      })
+      return false;
+    }
     app.callFunction({
         name: 'getList',
         data: {
-          uid: 1 // todo
+          uid: uid
         }
       })
       .then(res => {

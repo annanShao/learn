@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-01-30 16:11:10
- * @LastEditTime: 2022-02-12 22:49:41
+ * @LastEditTime: 2022-02-15 10:47:29
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\person\paymentCard.vue
@@ -12,9 +12,10 @@
     <span style="font-weight: bold">{{cardKeys[item]}}：</span>
     <span v-if="item === 'gmt_create' || item === 'gmt_end'">{{new Date(data[item] * 1000).toLocaleString('zh', { hour12: false })}}</span>
     <span v-else-if="item === 'status'">
-      <van-tag v-if="!data.status" plain type="danger">未购买</van-tag>
-      <van-tag v-else plain type="success">已购买</van-tag>
+      <van-tag v-if="!data.status" plain type="danger">未支付</van-tag>
+      <van-tag v-else plain type="success">已支付</van-tag>
     </span>
+    <span v-else-if="item === 'pid'">{{data[item].slice(0, 16)}}</span>
     <span v-else>{{data[item]}}</span>
   </div>
 </div>

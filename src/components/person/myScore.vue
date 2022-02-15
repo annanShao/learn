@@ -2,7 +2,7 @@
 import { constants } from 'http2';
  * @Author: your name
  * @Date: 2022-01-26 20:51:59
- * @LastEditTime: 2022-02-12 22:45:14
+ * @LastEditTime: 2022-02-14 23:21:28
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\person\myScore.vue
@@ -32,6 +32,10 @@ import { constants } from 'http2';
 </template>
 
 <script>
+import {
+  Notify
+} from 'vant';
+
 export default {
   name: 'myScore',
   data() {
@@ -41,11 +45,19 @@ export default {
     }
   },
   async created() {
+    const uid = localStorage.getItem('uid') || null;
+    if (uid === null) {
+      Notify({
+        type: 'warning',
+        message: '请刷新后重试'
+      })
+      return false
+    }
     const app = this.$cloudbase
     app.callFunction({
         name: 'getMyScore',
         data: {
-          uid: 1 // todo
+          uid: uid
         }
       })
       .then(res => {

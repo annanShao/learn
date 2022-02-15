@@ -2,7 +2,7 @@
 import { constants } from 'http2';
  * @Author: your name
  * @Date: 2022-02-04 12:15:49
- * @LastEditTime: 2022-02-12 22:39:14
+ * @LastEditTime: 2022-02-15 00:17:19
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\course\questionPage.vue
@@ -116,7 +116,14 @@ export default {
       }
       this.submiting = true
       const app = this.$cloudbase
-
+      const uid = localStorage.getItem('uid') || null;
+      if (uid === null) {
+        Notify({
+          type: 'warning',
+          message: '请刷新后重试'
+        })
+        return false
+      }
       const eid = this.eid
       let score = this.answerInfo.rightCounts * 2.5
       const timeNow = parseInt(new Date().getTime() / 1000)
@@ -127,7 +134,7 @@ export default {
         return total
       }, {
         sid: this.sid,
-        uid: 1,
+        uid: uid,
         wrongList: [],
         gmt_create: timeNow,
         gmt_modified: timeNow
@@ -218,11 +225,19 @@ export default {
     }
     this.sid = sid
     this.type = type
+    const uid = localStorage.getItem('uid') || null;
+    if (uid === null) {
+      Notify({
+        type: 'warning',
+        message: '请刷新后重试'
+      })
+      return false
+    }
     const app = this.$cloudbase
     app.callFunction({
         name: 'getQuestion',
         data: {
-          uid: 1, // todo 增加鉴权
+          uid: uid,
           sid: parseInt(sid),
           type: type
         }
@@ -260,6 +275,7 @@ export default {
 
 <style lang="less" scoped>
 @import "../../style/common.less";
+
 .question-page {
   &__body-wrapper {
     padding: 12px 12px 0 12px;

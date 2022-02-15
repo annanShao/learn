@@ -4,7 +4,7 @@ import { constants } from 'http2';
 import { parse } from 'querystring';
  * @Author: your name
  * @Date: 2022-02-04 12:16:44
- * @LastEditTime: 2022-02-12 16:04:28
+ * @LastEditTime: 2022-02-15 11:50:26
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\course\operationPage.vue
@@ -72,15 +72,13 @@ export default {
     const db = app.database()
     const _ = db.command
 
-    let {
-      data
-    } = await db
+    let {result} = await db
       .collection('operationImg')
       .where({
         sid: _.eq(this.courseIndex)
       })
       .get()
-    let fileIds = data.map(current => {
+    let fileIds = result.data.map(current => {
       return current.fileId
     })
     if (fileIds.length) {
