@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2022-02-13 14:27:12
- * @LastEditTime: 2022-02-15 12:43:11
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-10 15:19:38
+ * @LastEditors: annan shao 43042815+annanShao@users.noreply.github.com
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\cloudfunctions\payCallback\index.js
  */
@@ -60,7 +60,7 @@ exports.main = serverless(async (req, res) => {
   } else {
 
     const data = paymentInfo.data[0]
-    if (data.count !== parseInt(result.total_fee) * 10) {
+    if (parseInt(data.count) * 100 !== parseInt(result.total_fee)) {
       res.statusCode = 100;
       res.setHeader("Content-Type", "text/plain");
       res.end(false);

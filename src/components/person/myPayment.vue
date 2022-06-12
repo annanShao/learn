@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2022-01-26 20:52:12
- * @LastEditTime: 2022-02-15 00:16:27
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-10 15:09:07
+ * @LastEditors: annan shao 43042815+annanShao@users.noreply.github.com
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\person\myPayment.vue
 -->
@@ -36,7 +36,7 @@ export default {
     cardData: function () {
       return this.data.reduce((total, current) => {
         current.subject = this.questionSetDict[current.sid - 1]
-        current.gmt_end = current.gmt_create + current.count / 10 * 60 * 60 * 24 * 30
+        current.gmt_end = current.gmt_create + (current.count === 20 ? 30 : current.count) / 10 * 60 * 60 * 24 * 30
         total[current.type - 1].push(current)
         return total
       }, [

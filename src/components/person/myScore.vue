@@ -2,8 +2,8 @@
 import { constants } from 'http2';
  * @Author: your name
  * @Date: 2022-01-26 20:51:59
- * @LastEditTime: 2022-02-15 12:45:55
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-01 13:44:41
+ * @LastEditors: annan shao 43042815+annanShao@users.noreply.github.com
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\person\myScore.vue
 -->
@@ -69,7 +69,7 @@ export default {
         })
         this.loadingStatus = 'success'
       })
-      .catch(res => {
+      .catch(() => {
         this.loadingStatus = 'fail'
       })
   }

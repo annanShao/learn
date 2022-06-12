@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2022-01-30 14:12:05
- * @LastEditTime: 2022-02-15 12:45:12
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-01 13:58:29
+ * @LastEditors: annan shao 43042815+annanShao@users.noreply.github.com
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\src\components\course\listPanel.vue
 -->
@@ -49,166 +49,171 @@
 </template>
 
 <script>
-import _ from 'lodash'
-import uuid from "@/utils/uuid.js"
-import wx from 'weixin-js-sdk'
+/* eslint-disable */
+import _ from "lodash";
 
-import {
-  Dialog,
-  NoticeBar
-} from 'vant';
+import { Dialog } from "vant";
 
-import {
-  Notify
-} from 'vant';
+import { Notify } from "vant";
 
 export default {
-  name: 'listPanel',
+  name: "listPanel",
   data() {
     return {
       activePanels: [],
       currentPanelIndex: -1,
-      typeDict: ['新培', '复审'],
-      questionChoose: [{
-          order: '顺序练习',
-          test: '模拟考试',
-          operation: '实操手册',
-          wrong: '错题回顾'
+      typeDict: ["新培", "复审"],
+      questionChoose: [
+        {
+          order: "顺序练习",
+          test: "模拟考试",
+          operation: "实操手册",
+          wrong: "错题回顾",
         },
         {
-          order: '顺序练习',
-          test: '模拟考试',
-          wrong: '错题回顾'
-        }
+          order: "顺序练习",
+          test: "模拟考试",
+          wrong: "错题回顾",
+        },
       ],
       showDialog: false,
       chooseQuestionCount: [],
-      finalData: {}
-    }
+      finalData: {},
+    };
   },
   props: {
     data: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     questionType: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
   methods: {
     handleQuestionEnter(flag, sid) {
       switch (flag) {
-        case 'operation':
+        case "operation":
           this.$router.push({
-            path: '/operation',
-            query: {
-              sid: sid
-            }
-          })
-          break
-        default:
-          this.$router.push({
-            path: '/question',
+            path: "/operation",
             query: {
               sid: sid,
-              type: flag
-            }
-          })
+            },
+          });
+          break;
+        default:
+          this.$router.push({
+            path: "/question",
+            query: {
+              sid: sid,
+              type: flag,
+            },
+          });
       }
     },
-    handleBuyQuestion: _.debounce(function (sid, type, index, choose) {
-      this.currentPanelIndex = index
+    handleBuyQuestion: _.debounce(function(sid, type, index, choose) {
+      this.currentPanelIndex = index;
       if (!choose) {
         Notify({
-          type: 'warning',
-          message: '请先选择购买时间',
-          duration: 2000
+          type: "warning",
+          message: "请先选择购买时间",
+          duration: 2000,
         });
-        return false
+        return false;
       }
-      const count = parseInt(choose)
-      const uid = localStorage.getItem('uid');
-      const openid = localStorage.getItem('openid')
+      const count = parseInt(choose);
+      const uid = localStorage.getItem("uid");
+      const openid = localStorage.getItem("openid");
       if (uid === null) {
         Notify({
-          type: 'warning',
-          message: '请刷新后重试'
-        })
+          type: "warning",
+          message: "请刷新后重试",
+        });
       }
       Dialog.confirm({
-          title: '注意',
-          message: `是否确定购买此题库——${choose}个月`
-        })
+        title: "注意",
+        message: `是否确定购买此题库——${choose}个月`,
+      })
         .then(() => {
-          const app = this.$cloudbase
-          app.callFunction({
-              name: 'buyQuestion',
+          const app = this.$cloudbase;
+          app
+            .callFunction({
+              name: "buyQuestion",
               data: {
                 sid,
                 uid: uid,
                 count: count,
                 type,
-                openid: openid
-              }
+                openid: openid,
+              },
             })
             .then((res) => {
               // 唤起支付
               if (res.result.success) {
-                const timeNow = res.result.data.timeNow
-                this.finalData = res.result.data.finalData
+                const timeNow = res.result.data.timeNow;
+                this.finalData = res.result.data.finalData;
                 if (typeof WeixinJSBridge == "undefined") {
                   if (document.addEventListener) {
-                    document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                    document.addEventListener(
+                      "WeixinJSBridgeReady",
+                      onBridgeReady,
+                      false
+                    );
                   } else if (document.attachEvent) {
-                    document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
-                    document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                    document.attachEvent("WeixinJSBridgeReady", onBridgeReady);
+                    document.attachEvent(
+                      "onWeixinJSBridgeReady",
+                      onBridgeReady
+                    );
                   }
                 } else {
                   this.onBridgeReady({
                     count,
                     index,
-                    timeNow
+                    timeNow,
                   });
                 }
               } else {
                 Notify({
-                  type: 'danger',
-                  message: res.result.message
-                })
+                  type: "danger",
+                  message: res.result.message,
+                });
               }
             })
-            .catch(error => {
+            .catch((error) => {
               Notify({
-                type: 'danger',
+                type: "danger",
                 message: error.message,
-                duration: 2000
+                duration: 2000,
               });
-            })
+            });
         })
         .catch(() => {
           // on cancel
-        })
+        });
     }, 500),
     onBridgeReady(data = null) {
-      let that = this
+      let that = this;
       WeixinJSBridge.invoke(
-        'getBrandWCPayRequest', {
-          ...this.finalData
+        "getBrandWCPayRequest",
+        {
+          ...this.finalData,
         },
-        async function (res) {
+        async function(res) {
           if (res.err_msg == "get_brand_wcpay_request:ok") {
             // 使用以上方式判断前端返回,微信团队郑重提示：
             //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-            const app = that.$cloudbase
-            await app.callFunction({
-                name: 'checkPayment',
+            const app = that.$cloudbase;
+            await app
+              .callFunction({
+                name: "checkPayment",
                 data: {
                   pid: that.finalData.package.slice(10),
-                  timeStamp: that.finalData.timeStamp
-                }
+                  timeStamp: that.finalData.timeStamp,
+                },
               })
-              .then(res => {
+              .then((res) => {
                 if (res.result.success && data) {
                   // 这样子直接更新就不需要刷新了
                   that.data[data.index] = {
@@ -216,26 +221,27 @@ export default {
                     count: data.count,
                     gmt_create: data.timeNow,
                     gmt_end: data.timeNow + data.count * 60 * 60 * 24 * 30,
-                    status: 1
-                  }
-                  that.$forceUpdate()
+                    status: 1,
+                  };
+                  that.$forceUpdate();
                 } else {
                   // 刷新
-                  window.location.reload()
+                  window.location.reload();
                 }
-              })
+              });
           }
-        });
-    }
+        }
+      );
+    },
   },
   created() {
     this.chooseQuestionCount = this.data.map(() => {
       return {
-        count: 1
-      }
-    })
-  }
-}
+        count: 1,
+      };
+    });
+  },
+};
 </script>
 
 <style lang="less">
@@ -250,14 +256,13 @@ export default {
   .cell-resize();
 }
 
-.course-listpanel__cell-wrapper>.van-cell {
+.course-listpanel__cell-wrapper > .van-cell {
   padding: 4px 6px;
 }
 
 .course-list__cell {
   // font-size: 16px;
   .cell-resize();
-
 }
 
 .list-panel__radio-group {

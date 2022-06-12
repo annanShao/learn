@@ -1,11 +1,3 @@
-<!--
- * @Author: your name
- * @Date: 2022-01-25 18:48:58
- * @LastEditTime: 2022-02-15 12:43:50
- * @LastEditors: Please set LastEditors
- * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \vue-app\src\components\course\list.vue
--->
 <template>
 <div>
   <van-skeleton class="skeleton-class" v-if="loadingStatus === 'pending'" title :row="8" />
@@ -52,7 +44,7 @@ export default {
         if (idIndex !== -1) {
           current.status = 1
           current.gmt_create = this.paymentDetails[idIndex].gmt_create
-          current.count = this.paymentDetails[idIndex].count / 10
+          current.count = (this.paymentDetails[idIndex].count === 20 ? 30 : this.paymentDetails[idIndex].count) / 10
           current.gmt_end = this.paymentDetails[idIndex].gmt_create + current.count * 60 * 60 * 24 * 30
         }
         total[current.type - 1].push(current)

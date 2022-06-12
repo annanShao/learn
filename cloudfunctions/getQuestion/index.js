@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2022-01-25 19:29:30
- * @LastEditTime: 2022-02-15 13:11:43
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-10 15:08:25
+ * @LastEditors: annan shao 43042815+annanShao@users.noreply.github.com
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-app\cloudfunctions\helloworld\index.js
  */
@@ -12,9 +12,7 @@ exports.main = async event => {
   const app = cloud.init({
     env: cloud.SYMBOL_CURRENT_ENV,
   });
-  const sid = event.sid
-  const type = event.type
-  const uid = event.uid
+  const {sid, type, uid} = event
   const db = app.database()
   let data = []
   const _ = db.command
@@ -36,7 +34,7 @@ exports.main = async event => {
   }
   const tempData = data.data[0]
   // if ((tempData.gmt_create + tempData.count / 10 * 60) < parseInt(new Date().getTime() / 1000)) { // test
-  if ((tempData.gmt_create + tempData.count / 10 * 60 * 60 * 24 * 30) < parseInt(new Date().getTime() / 1000)) {
+  if ((tempData.gmt_create + (tempData.count === 20 ? 30 : tempData.count) / 10 * 60 * 60 * 24 * 30) < parseInt(new Date().getTime() / 1000)) {
     return {
       success: false,
       message: '题库有效期已过，请重新购买'
@@ -100,7 +98,8 @@ exports.main = async event => {
         }
         case 'test':
           let types = [3, 1, 2]
-          let counts = [15, 15, 10]
+          let counts = parseInt(sid) <= 14 ? [15, 15, 10] : [20, 20, 10]
+          // let counts = [15, 15, 10]
           let testData = []
           let res = {}
           let searchFlag = true
